@@ -21,32 +21,14 @@ public class Main {
             serverSocket = new ServerSocket(4221);
             serverSocket.setReuseAddress(true);
             clientSocket = serverSocket.accept(); // Wait for connection from client.
-            //         clientSocket.
-            System.out.println("accepted new connection");
-            System.out.println("reading data ...");
-            //      InputStream is = clientSocket.getInputStream();
             InputStream is = clientSocket.getInputStream();
-            //      int ch = is.read();
             String startLine = null;
             BufferedReader in = new BufferedReader(new InputStreamReader(is));
             startLine = in.lines().findFirst().get();
-            //      List<Character> startLineChars = new ArrayList<>();
-            //      while (ch != -1) {
-            //        char ch2 = (char) ch;
-            //        if (ch2 == '\n' && startLine == null) {
-            //          StringBuilder sb = new StringBuilder(startLineChars.size());
-            //          startLineChars.forEach(x -> sb.append(x));
-            //          startLine = sb.toString();
-            //        }
-            //        System.out.print((char) ch);
-            //        ch = is.read();
-            //        startLineChars.add(ch2);
-            //      }
-//            System.out.println("data read completed!");
             String path = startLine.split(" ")[1];
             OutputStream o = clientSocket.getOutputStream();
             String response = "HTTP/1.1 200 OK\r\n\r\n";
-            o.write(response.getBytes(StandardCharsets.UTF_8));
+//            o.write(response.getBytes(StandardCharsets.UTF_8));
             String okResponse = "HTTP/1.1 200 OK\r\n\r\n";
             String notFoundResponse = "HTTP/1.1 404 Not Found\r\n\r\n";
             if ("/".equals(path)) {
@@ -54,7 +36,7 @@ public class Main {
             } else {
                 o.write(notFoundResponse.getBytes(StandardCharsets.UTF_8));
             }
-//            System.out.println("closing socket");
+            System.out.println("closing socket");
             clientSocket.close();
         } catch (IOException e) {
             System.out.println("IOException: " + e.getMessage());
