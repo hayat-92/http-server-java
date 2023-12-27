@@ -22,7 +22,7 @@ public class Main {
             String requestReader =
                     new BufferedReader(new InputStreamReader(inputStream)).readLine();
             System.out.println("Request content: " + requestReader);
-            if (requestReader.contains("GET / HTTP/1.1")) {
+            if (requestReader.contains("GET / HTTP/1.1 200")) {
                 printWriter.println("HTTP/1.1 200 OK\r\n\r\n");
             } else {
                 printWriter.println("HTTP/1.1 404 Not Found\r\n\r\n");
