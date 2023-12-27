@@ -17,7 +17,7 @@ public class Main {
             clientSocket = serverSocket.accept(); // Wait for connection from client.
             System.out.println("accepted new connection");
             PrintWriter printWriter = new PrintWriter(clientSocket.getOutputStream());
-            printWriter.println("HTTP/1.1 200 OK\r\n\r\n");
+//            printWriter.println("HTTP/1.1 200 OK\r\n\r\n");
             InputStream inputStream = clientSocket.getInputStream();
             String requestReader =
                     new BufferedReader(new InputStreamReader(inputStream)).readLine();
