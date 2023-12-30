@@ -15,7 +15,7 @@ public class HttpRequestHandler {
         }
 
         if(path.startsWith("/user-agent")){
-            String body = path.substring("user-agent:".length()).trim();
+            String body = httpRequest.getHeaders().get("User-Agent");
             Map<String, String> headers = new HashMap<>();
             headers.put("Content-Type", "text/plain");
             headers.put("Content-Length", String.valueOf(body.length()));

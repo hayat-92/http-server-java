@@ -50,6 +50,6 @@ public class RawHttpRequestParser {
         }
 
         String httpPath = startLineParts[1];
-        return new HttpRequest(requestType, httpPath, null, body.toString());
+        return new HttpRequest(requestType, httpPath, headers, body.toString());
     }
 }
