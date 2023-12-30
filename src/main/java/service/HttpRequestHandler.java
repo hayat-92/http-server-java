@@ -14,6 +14,14 @@ public class HttpRequestHandler {
             return new RawHttpResponse("HTTP/1.1 200 OK", null, "");
         }
 
+        if(path.startsWith("/user-agent")){
+            String body = path.substring("user-agent:".length()).trim();
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Content-Type", "text/plain");
+            headers.put("Content-Length", String.valueOf(body.length()));
+            return new RawHttpResponse("HTTP/1.1 200 OK", headers, body);
+        }
+
         if (path.startsWith("/echo/")) {
             String body = path.substring(6);
             Map<String, String> headers = new HashMap<>();
