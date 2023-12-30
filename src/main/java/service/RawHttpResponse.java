@@ -14,11 +14,13 @@ public class RawHttpResponse {
         this.body = body;
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder result = new StringBuilder();
         result.append(startLine).append(CRLF);
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            result.append(entry.getKey()).append(": ").append(entry.getValue()).append(CRLF);
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                result.append(entry.getKey()).append(": ").append(entry.getValue()).append(CRLF);
+            }
         }
         result.append(CRLF);
         result.append(body);
