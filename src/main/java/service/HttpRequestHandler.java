@@ -43,7 +43,6 @@ public class HttpRequestHandler {
         if(httpRequest.getRequestType().equals(RequestType.POST) && path.startsWith("/files")){
             String fileName = path.substring(7);
             Path filePath = Paths.get(dir + "/" + fileName);
-            System.out.println(fileName+" ******************  "+filePath);
             try {
                 Files.write(filePath, httpRequest.getBody().getBytes());
                 return new RawHttpResponse("HTTP/1.1 201 OK", null, "");
