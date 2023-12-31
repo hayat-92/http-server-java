@@ -41,7 +41,7 @@ public class HttpRequestHandler {
         dir = dir == null ? "." : dir;
 
         if(httpRequest.getRequestType().equals(RequestType.POST) && path.startsWith("/files")){
-            String fileName = path.substring(7, path.length()-4);
+            String fileName = path.substring(7);
             Path filePath = Paths.get(dir + "/" + fileName);
             System.out.println(fileName+" ******************  "+filePath);
             try {
