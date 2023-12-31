@@ -3,30 +3,31 @@ import service.ConnectionHandler;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         final ConnectionHandler connectionHandler = new ConnectionHandler();
-        ServerSocket serverSocket = null;
-        Socket clientSocket = null;
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-        try {
-            serverSocket = new ServerSocket(4221);
+        try (ServerSocket serverSocket = new ServerSocket(4221)) {
             serverSocket.setReuseAddress(true);
-            clientSocket = serverSocket.accept();
-            connectionHandler.handleConnection(clientSocket);
-            clientSocket.close();
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                CompletableFuture.runAsync(() -> {
+                    try {
+                        connectionHandler.handleConnection(clientSocket);
+                        clientSocket.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }, executorService);
+            }
         } catch (IOException e) {
             System.out.println("Error");
-        } finally {
-            try {
-                if (serverSocket != null) {
-                    serverSocket.close();
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            e.printStackTrace();
         }
-
     }
 }
