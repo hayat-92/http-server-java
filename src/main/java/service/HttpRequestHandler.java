@@ -7,7 +7,7 @@ import java.util.Map;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 public class HttpRequestHandler {
-    private final String dir;
+    private String dir;
 
     public HttpRequestHandler(String dir) {
         this.dir = dir;
@@ -37,6 +37,19 @@ public class HttpRequestHandler {
             headers.put("Content-Type", "text/plain");
             headers.put("Content-Length", String.valueOf(body.length()));
             return new RawHttpResponse("HTTP/1.1 200 OK", headers, body);
+        }
+        dir = dir == null ? "." : dir;
+
+        if(httpRequest.getRequestType().equals(RequestType.POST) && path.startsWith("/files")){
+            String fileName = path.substring(7, path.length()-4);
+            Path filePath = Paths.get(dir + "/" + fileName);
+            System.out.println(fileName+" ******************  "+filePath);
+            try {
+                Files.write(filePath, httpRequest.getBody().getBytes());
+                return new RawHttpResponse("HTTP/1.1 201 OK", null, "");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
 

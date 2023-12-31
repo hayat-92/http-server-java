@@ -32,8 +32,6 @@ public class RawHttpRequestParser {
             }
             httpRequestLines.add(line);
         }
-
-        StringBuilder body = new StringBuilder();
         if (httpRequestLines.isEmpty()) {
             throw new HttpException("BAD REQUEST", "Invalid request");
         }
@@ -47,6 +45,14 @@ public class RawHttpRequestParser {
             requestType = RequestType.valueOf(rType);
         } catch (IllegalArgumentException e) {
             throw new HttpException("BAD REQUEST", "Invalid request");
+        }
+
+        StringBuilder body = new StringBuilder();
+        if(requestType.equals(RequestType.POST) && headers.containsKey("Content-Length") && Integer.parseInt(headers.get("Content-Length")) > 0){
+            int contentLength = Integer.parseInt(headers.get("Content-Length"));
+            char[] buffer = new char[contentLength];
+            bufferedReader.read(buffer, 0, contentLength);
+            body.append(buffer);
         }
 
         String httpPath = startLineParts[1];
