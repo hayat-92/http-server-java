@@ -5,7 +5,13 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class ConnectionHandler {
-    private final HttpRequestHandler httpRequestHandler = new HttpRequestHandler();
+    private final HttpRequestHandler httpRequestHandler;
+    private final String dir;
+
+    public ConnectionHandler(String dir) {
+        this.httpRequestHandler = new HttpRequestHandler(dir);
+        this.dir = dir;
+    }
 
     public void handleConnection(Socket clientSocket) throws IOException {
         HttpRequest httpRequest = RawHttpRequestParser.parseHttpRequest(clientSocket.getInputStream());

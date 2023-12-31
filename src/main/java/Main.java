@@ -9,7 +9,11 @@ import java.util.concurrent.Executors;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        final ConnectionHandler connectionHandler = new ConnectionHandler();
+        String directory = null;
+        if(args.length>=2){
+            directory = args[1];
+        }
+        final ConnectionHandler connectionHandler = new ConnectionHandler(directory);
         ExecutorService executorService = Executors.newFixedThreadPool(10);
 
         try (ServerSocket serverSocket = new ServerSocket(4221)) {
